@@ -11,6 +11,7 @@ import ToasterProvider from '@/app/providers/ToasterProvider';
 import './globals.css'
 import ClientOnly from './components/ClientOnly';
 import getCurrentUser from './actions/getCurrentUser';
+import GenerateIdealModal from './components/modals/GenerateIdeaModal';
 
 export const metadata = {
   title: 'mihouse AI',
@@ -37,6 +38,7 @@ export default async function RootLayout({
           <RegisterModal />
           <SearchModal />
           <RentModal />
+          <GenerateIdealModal/>
           <Navbar currentUser={currentUser} />
         </ClientOnly>
         <div className="pb-20 pt-28">

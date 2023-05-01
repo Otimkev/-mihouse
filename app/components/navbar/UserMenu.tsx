@@ -12,6 +12,7 @@ import { SafeUser } from "@/app/types";
 
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
+import useGenerateIdeaModal from "@/app/hooks/useGenerateIdeaModal";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null
@@ -25,6 +26,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
+  const generateIdeaModal = useGenerateIdeaModal();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,11 +42,18 @@ const UserMenu: React.FC<UserMenuProps> = ({
     rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
 
+  const onGenerateIdea = useCallback(() => {
+    // if (!currentUser) {
+    //   return loginModal.onOpen();
+    // }
+    generateIdeaModal.onOpen();
+  }, [generateIdeaModal]);
+
   return ( 
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div 
-          onClick={onRent}
+          onClick={onGenerateIdea}
           className="
             
             md:block
@@ -120,7 +129,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 />
                 <MenuItem 
                   label="Generate Idea" 
-                  onClick={rentModal.onOpen}
+                  onClick={generateIdeaModal.onOpen}
                 />
                 <hr />
                 <MenuItem 
