@@ -1,6 +1,5 @@
 'use client';
 
-import useCustomSelector from "@/app/hooks/useCustomSelector";
 import useRoomStyles from "@/app/hooks/userRoomStyle";
 import Select from "react-select";
 

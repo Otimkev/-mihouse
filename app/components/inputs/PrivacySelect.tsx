@@ -1,8 +1,6 @@
 'use client';
 
-import useCustomSelector from "@/app/hooks/useCustomSelector";
 import usePrivacy from "@/app/hooks/userPrivacy";
-import useRoomStyles from "@/app/hooks/userRoomStyle";
 import Select from "react-select";
 
 export type CustomSelectorValue = {
