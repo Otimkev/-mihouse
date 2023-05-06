@@ -52,6 +52,21 @@ const UserMenu: React.FC<UserMenuProps> = ({
   return ( 
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
+      <div 
+          onClick={onGenerateIdea}
+          className="
+            md:block
+            text-sm 
+            font-semibold 
+            py-3 
+            px-4 
+            rounded-full 
+            hover:bg-neutral-100 
+            transition 
+          "
+        >
+          Generation Credits: 5
+        </div>
         <div 
           onClick={onGenerateIdea}
           className="
@@ -65,9 +80,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
             hover:bg-neutral-100 
             transition 
             cursor-pointer
+            border-[2px] 
           "
         >
-          Generate Idea
+          Billing
         </div>
         <div 
         onClick={toggleOpen}
