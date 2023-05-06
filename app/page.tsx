@@ -46,7 +46,7 @@ const Home = async ({ searchParams }: HomeProps) => {
               Take a picture of your interior, then click to upload or drag&drop it above. Click on "Generate Ideas" button below to see a virtual preview of your house. Make sure the entire room is visible in the photo and that it is taken horizontally!
             </div>
             <div className="pt-4">
-              <GenerateButton label={"Generate Idea"} />
+              <GenerateButton label="Generate Idea" />
             </div>
           </div>
           <div className="rounded-lg col-span-2 p-4 2xl:overflow-y-auto 2xl:max-h-screen">
