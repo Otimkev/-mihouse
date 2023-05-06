@@ -41,7 +41,7 @@ export default async function RootLayout({
           <GenerateIdealModal/>
           <Navbar currentUser={currentUser} />
         </ClientOnly>
-        <div className="pb-20 pt-28">
+        <div className="pb-20 pt-28 h-screen overflow-hidden">
           {children}
         </div>
       </body>
