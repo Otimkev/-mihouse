@@ -1,30 +1,29 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
-import { format } from 'date-fns';
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { format } from "date-fns";
 
 import useCountries from "@/app/hooks/useCountries";
-import { 
-  SafeListing, 
-  SafeReservation, 
-  SafeUser 
-} from "@/app/types";
+import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 
 import HeartButton from "../HeartButton";
 import Button from "../Button";
-import ClientOnly from "../ClientOnly";
+
+import { fetchListings, selectListings } from "@/app/slices/listingsSlice";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import { IRenders } from "@/app/actions/listings";
 
 interface ListingCardProps {
-  data: SafeListing;
+  data: IRenders;
   reservation?: SafeReservation;
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
-  currentUser?: SafeUser | null
-};
+  currentUser?: SafeUser | null;
+}
 
 const ListingCard: React.FC<ListingCardProps> = ({
   data,
@@ -32,93 +31,133 @@ const ListingCard: React.FC<ListingCardProps> = ({
   onAction,
   disabled,
   actionLabel,
-  actionId = '',
+  actionId = "",
   currentUser,
 }) => {
   const router = useRouter();
-  const { getByValue } = useCountries();
+  //const { getByValue } = useCountries();
 
-  const location = getByValue(data.locationValue);
+  //const location = getByValue(data.locationValue);
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+      e.stopPropagation();
 
-    if (disabled) {
-      return;
-    }
+      if (disabled) {
+        return;
+      }
 
-    onAction?.(actionId)
-  }, [disabled, onAction, actionId]);
+      onAction?.(actionId);
+    },
+    [disabled, onAction, actionId]
+  );
 
-  const price = useMemo(() => {
-    if (reservation) {
-      return reservation.totalPrice;
-    }
+  // const price = useMemo(() => {
+  //   if (reservation) {
+  //     return reservation.totalPrice;
+  //   }
 
-    return data.price;
-  }, [reservation, data.price]);
+  //   return data.price;
+  // }, [reservation, data.price]);
 
-  const reservationDate = useMemo(() => {
-    if (!reservation) {
-      return null;
-    }
-  
-    const start = new Date(reservation.startDate);
-    const end = new Date(reservation.endDate);
+  // const reservationDate = useMemo(() => {
+  //   if (!reservation) {
+  //     return null;
+  //   }
 
-    return `${format(start, 'PP')} - ${format(end, 'PP')}`;
-  }, [reservation]);
+  //   const start = new Date(reservation.startDate);
+  //   const end = new Date(reservation.endDate);
+
+  //   return `${format(start, "PP")} - ${format(end, "PP")}`;
+  // }, [reservation]);
 
   return (
-    <div 
-      onClick={() => console.log("Not implemented!!")} 
-      //onClick={() => router.push(`/listings/${data.id}`)} 
-      className="col-span-1 cursor-pointer group"
+    <div
+      onClick={() => console.log("Not implemented!!")}
+      //onClick={() => router.push(`/listings/${data.id}`)}
+      className="col-span-1"
     >
       <div className="flex flex-col gap-2 w-full">
-        <div 
-          className="
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2  gap-2">
+          <div>
+            <div
+              className="
             aspect-square 
-            w-full 
+            w-full
             relative 
             overflow-hidden 
             rounded-xl
+            cursor-pointer group
           "
-        >
-          <Image
-            fill
-            className="
-              object-cover 
-              h-full 
+            >
+              <Image
+                fill
+                className="
+              object-cover  
               w-full 
               group-hover:scale-110 
               transition
             "
-            src={data.imageSrc}
-            alt="Listing"
-          />
-          <div className="
+                src={data?.originalImageUrl || "/images/image_placeholder.jpg"}
+                alt="Listing"
+              />
+
+              <div
+                className="
             absolute
             top-3
             right-3
-          ">
-            <HeartButton 
-              listingId={data.id} 
-              currentUser={currentUser}
-            />
+          "
+              >
+                <HeartButton listingId="listingId" currentUser={currentUser} />
+              </div>
+            </div>
+            <div className="pt-2">
+              {/* <div className="font-medium text-lg">{`Original ${data.roomType} ${data.roomStyle}`}</div> */}
+              <div className="font-light text-neutral-500">{`Original ${data.roomType} ${data.roomStyle}`}</div>
+            </div>
+          </div>
+          <div>
+            <div
+              className="
+            aspect-square 
+            w-full
+            relative 
+            overflow-hidden 
+            rounded-xl
+            cursor-pointer group
+          "
+            >
+              <Image
+                fill
+                className="
+              object-cover 
+              w-full 
+              group-hover:scale-110 
+              transition
+            "
+                src={data?.renderedImageUrl || "/images/image_placeholder.jpg"}
+                alt="Listing"
+              />
+              <div
+                className="
+            absolute
+            top-3
+            right-3
+          "
+              >
+                <HeartButton listingId="listingId" currentUser={currentUser} />
+              </div>
+            </div>
+            <div className="pt-2">
+              {/* <div className="font-medium text-lg">Rendered Image, Kampala</div> */}
+              <div className="font-light text-neutral-500">{`Rendered ${data.roomType} ${data.roomStyle}`}</div>
+            </div>
           </div>
         </div>
-        <div className="font-semibold text-lg">
-          {location?.region}, {location?.label}
-        </div>
-        <div className="font-light text-neutral-500">
-          {reservationDate || data.category}
-        </div>
+
         <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">
-            {/* $ {price} */}
-          </div>
+          <div className="font-semibold">{/* $ {price} */}</div>
           {/* {!reservation && (
             <div className="font-light">night</div>
           )} */}
@@ -127,13 +166,13 @@ const ListingCard: React.FC<ListingCardProps> = ({
           <Button
             disabled={disabled}
             small
-            label={actionLabel} 
+            label={actionLabel}
             onClick={handleCancel}
           />
         )}
       </div>
     </div>
-   );
-}
- 
+  );
+};
+
 export default ListingCard;

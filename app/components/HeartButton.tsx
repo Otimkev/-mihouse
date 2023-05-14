@@ -16,14 +16,15 @@ const HeartButton: React.FC<HeartButtonProps> = ({
   listingId,
   currentUser
 }) => {
-  const { hasFavorited, toggleFavorite } = useFavorite({
-    listingId,
-    currentUser
-  });
+  // const { hasFavorited, toggleFavorite } = useFavorite({
+  //   listingId,
+  //   currentUser
+  // });
+  const hasFavorited = true;
 
   return (
     <div 
-      onClick={toggleFavorite}
+      onClick={() => {}}
       className="
         relative
         hover:opacity-80

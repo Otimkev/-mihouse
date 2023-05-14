@@ -6,20 +6,27 @@ import getListings, { IListingsParams } from "@/app/actions/getListings";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "./components/ClientOnly";
 import GenerateButton from "./components/GenerateButton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./store/store";
+import ListingPlatform from "./components/listings/ListingPlatform";
+import { useAppSelector } from "./redux/hooks";
+import { selectListings } from "./slices/listingsSlice";
 
 interface HomeProps {
   searchParams: IListingsParams;
 }
 
 const Home = async ({ searchParams }: HomeProps) => {
-  const listings = await getListings(searchParams);
+  //const listings = await getListings(searchParams);
   const currentUser = await getCurrentUser();
+  
 
-  if (listings.length === 0) {
+  if (false) {
     return (
-      <ClientOnly>
-        <EmptyState showReset />
-      </ClientOnly>
+        <ClientOnly>
+          <EmptyState showReset />
+        </ClientOnly>
+
     );
   }
 
@@ -49,27 +56,21 @@ const Home = async ({ searchParams }: HomeProps) => {
               <GenerateButton label="Generate Idea" />
             </div>
           </div>
-          <div className="rounded-lg col-span-2 p-4 2xl:overflow-y-auto 2xl:max-h-screen">
+          <div className="rounded-lg col-span-2 p-4 2xl:overflow-y-auto 2xl:max-h-screen xl:overflow-y-auto xl:max-h-screen">
             <div
               className="
             grid 
             grid-cols-1 
-            sm:grid-cols-2 
-            md:grid-cols-2
-            lg:grid-cols-2
-            xl:grid-cols-2
-            2xl:grid-cols-2
+            sm:grid-cols-1
+            md:grid-cols-1
+            lg:grid-cols-1
+            xl:grid-cols-1
+            2xl:grid-cols-1
             gap-4
             2xl:pb-60
           "
             >
-              {listings.map((listing: any) => (
-                <ListingCard
-                  currentUser={currentUser}
-                  key={listing.id}
-                  data={listing}
-                />
-              ))}
+              <ListingPlatform/>
             </div>
           </div>
         </div>

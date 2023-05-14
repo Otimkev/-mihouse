@@ -6,15 +6,18 @@ import Select from "react-select";
 export type CustomSelectorValue = {
     label: string;
     value: string;
+    placeholderText?: string;
 }
 
 interface CustomSelectorProps {
     value?: CustomSelectorValue;
     onChange: (value: CustomSelectorValue) => void;
+    placeholderText?: string;
 }
 const CustomSelector: React.FC<CustomSelectorProps> = ({
     value,
-    onChange
+    onChange,
+    placeholderText
 }) => {
 
     const {getAllRoomTypes} = useCustomSelector();
@@ -22,7 +25,7 @@ const CustomSelector: React.FC<CustomSelectorProps> = ({
     return (
         <div>
             <Select
-                placeholder="Living room"
+                placeholder={placeholderText}
                 isClearable
                 options={getAllRoomTypes()}
                 value={value}

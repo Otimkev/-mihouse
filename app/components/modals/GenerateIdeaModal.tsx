@@ -39,7 +39,8 @@ const GenerateIdealModal = () => {
             roomStyle: "",
             originalImageSrc: "",
             renderImageSrc: "",
-            privacy: ""
+            privacy: "",
+            userId: ""
         }
     });
 
@@ -47,6 +48,8 @@ const GenerateIdealModal = () => {
     const roomStyle = watch("roomStyle");
     const privacy = watch("privacy");
     const originalImageSrc = watch("originalImageSrc");
+
+    console.log("ORIGINAL_IMAGE", originalImageSrc)
 
     const setCustomValue = (id: string, value: any) => {
         setValue(id, value, {
@@ -92,11 +95,13 @@ const GenerateIdealModal = () => {
                 subtitle="Select what best suits you"
             />
             <CustomSelector
+                placeholderText="Select Room type"
                 value={roomType}
                 onChange={(value) => setCustomValue("roomType", value)}
             />
 
             <RoomStyleSelect
+                placeholderText="Select Room style"
                 value={roomStyle}
                 onChange={(value) => setCustomValue("roomStyle", value)}
             />
@@ -124,7 +129,7 @@ const GenerateIdealModal = () => {
           <div className="flex flex-col gap-8">
             <Heading
               title="Take a photo of your current room."
-              subtitle="For best results make sure it shows the entire room in a 90° straight angle facing a wall or window horizontally (click for example). Not from a corner or angled, and not a wide angle photo as it's trained on regular photos. The AI isn't great at angled pics (yet)! Uploads + renders are shown on site but auto deleted after 15 mins. "
+              subtitle="For best results make sure it shows the entire room in a 90° straight angle facing a wall or window horizontally. The AI isn't great at angled pics (yet)!"
             />
             <ImageUpload
               onChange={(value) => setCustomValue('originalImageSrc', value)}
@@ -133,7 +138,7 @@ const GenerateIdealModal = () => {
           </div>
         )
       }
-
+      
     return (
         <Modal 
             disabled={isLoading}
