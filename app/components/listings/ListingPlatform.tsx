@@ -30,7 +30,7 @@ const ListingPlatform: React.FC<ListingPlatformProps> = ({data}) => {
 
   return (
     <>
-      {listings.map((listing: any) => (
+      {listings && listings.map((listing: any) => (
         <ListingCard
           key={listing.id}
           data={listing}

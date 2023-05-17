@@ -11,8 +11,6 @@ import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
 
-import { fetchListings, selectListings } from "@/app/slices/listingsSlice";
-import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { IRenders } from "@/app/actions/listings";
 
 interface ListingCardProps {
@@ -35,9 +33,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
   currentUser,
 }) => {
   const router = useRouter();
-  //const { getByValue } = useCountries();
-
-  //const location = getByValue(data.locationValue);
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -73,14 +68,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      onClick={() => console.log("Not implemented!!")}
-      //onClick={() => router.push(`/listings/${data.id}`)}
+      //onClick={() => console.log("Not implemented!!")}
       className="col-span-1"
     >
       <div className="flex flex-col gap-2 w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2  gap-2">
           <div>
             <div
+              onClick={() => router.push(`/listings/${data.id}`)}
               className="
             aspect-square 
             w-full
@@ -119,6 +114,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </div>
           <div>
             <div
+              onClick={() => router.push(`/listings/${data.id}`)}
               className="
             aspect-square 
             w-full

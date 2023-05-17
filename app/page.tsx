@@ -1,16 +1,11 @@
-import Container from "@/app/components/Container";
-import ListingCard from "@/app/components/listings/ListingCard";
+import Container from "@/app/components/Container"; 
 import EmptyState from "@/app/components/EmptyState";
 
 import getListings, { IListingsParams } from "@/app/actions/getListings";
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import ClientOnly from "./components/ClientOnly";
 import GenerateButton from "./components/GenerateButton";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store/store";
 import ListingPlatform from "./components/listings/ListingPlatform";
-import { useAppSelector } from "./redux/hooks";
-import { selectListings } from "./slices/listingsSlice";
 
 interface HomeProps {
   searchParams: IListingsParams;

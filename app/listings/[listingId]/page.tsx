@@ -1,38 +1,29 @@
-
-import getCurrentUser from "@/app/actions/getCurrentUser";
-import getListingById from "@/app/actions/getListingById";
-import getReservations from "@/app/actions/getReservations";
-
+"use client";
 import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
 
 import ListingClient from "./ListingClient";
+import ViewListingModal from "@/app/components/modals/ViewListingModal";
+import { useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
+import { fetchListingById, selectListingById } from "@/app/slices/listingByIdSlice";
+import { fetchListings, selectListings } from "@/app/slices/listingsSlice";
 
 interface IParams {
-  listingId?: string;
+  listingId?: any;
 }
+const ListingPage = ({ params }: { params: IParams }) => {
 
-const ListingPage = async ({ params }: { params: IParams }) => {
-
-  const listing = await getListingById(params);
-  const reservations = await getReservations(params);
-  const currentUser = await getCurrentUser();
-
-  if (!listing) {
-    return (
-      <ClientOnly>
-        <EmptyState />
-      </ClientOnly>
-    );
-  }
-
+  const dispatch = useAppDispatch();
+  const { listing, pending, error } = useAppSelector(selectListings);
+  console.log("THE_STURBBON_LISTING",listing)
   return (
     <ClientOnly>
-      <ListingClient
-        listing={listing}
-        reservations={reservations}
-        currentUser={currentUser}
-      />
+      <div>
+        <ViewListingModal images={[{id: 1,image:`${params.listingId}`}, {id: 2,image:`${params.listingId}`}]} onClose={function (): void {
+          dispatch(fetchListings("FOOD"))
+        } } />
+      </div>
     </ClientOnly>
   );
 }

@@ -3,12 +3,16 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import userReducer from "../slices/userSlice";
 import listingsReducer from "../slices/listingsSlice";
+import listingReducer from "../slices/listingByIdSlice";
+import CreateReducer from "../slices/createSlice";
 
 export function makeStore() {
     return configureStore({
         reducer: {
             user: userReducer,
-            listings: listingsReducer
+            listings: listingsReducer,
+            listing: listingReducer,
+            create: CreateReducer
         }
     })
 };
