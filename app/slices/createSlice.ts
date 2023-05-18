@@ -30,43 +30,41 @@ const uploadToStableDiffusion = async (fileToUpload: any) => {
           body: formData,
         }
       );
-      console.log("DATA_RETURNED", result.json())
-      return result.json();
+      return result;
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
 
 const initialState = {
-    render: {},
-    pending: false,
+    render: null,
+    isFetchingData: false,
     error: false,
-    completed: false,
 } as any
 
 const CreateSlice = createSlice({
     name: 'create',
     initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-        builder.addCase(createRender.pending, state => {
-            state.pending = true;
-        })
-
-        builder.addCase(createRender.fulfilled, (state, action) => {
-            state.listing = action.payload
-            state.completed = true;
-        })
-
-        .addCase(createRender.rejected, state => {
-            state.pending = false;
-            state.error = true;
-        })
-        
+    reducers: {
+      fetchDataStart: (state) => {
+        state.isFetchingData = true;
+        state.render = null;
+        state.error = false;
+      },
+      fetchDataSuccess: (state, action) => {
+        state.isFetchingData = false;
+        state.render = action.payload;
+        state.error = false;
+      },
+      fetchDataFailure: (state, action) => {
+        state.isFetchingData = false;
+        state.error = action.payload;
+      },
     }
 })
 
 export const selectRenderSlice = (state: RootState) => state.create;
+export const { fetchDataStart, fetchDataSuccess, fetchDataFailure } = CreateSlice.actions;
 
 export default CreateSlice.reducer;

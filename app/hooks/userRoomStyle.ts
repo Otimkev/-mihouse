@@ -2,7 +2,14 @@ const roomStyles = [
     "Modern",
     "Minimalist",
     "Tropical",
-    "Coastal"
+    "Coastal",
+    "Vintage",
+    "Maximalist",
+    "Christmas",
+    "Neoclassic",
+    "Scandinavian",
+    "Art deco",
+    "Exotic"
 ]
 
 const formatedRoomStyles = roomStyles.map((roomStyle) => ({

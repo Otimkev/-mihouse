@@ -12,9 +12,10 @@ import RoomStyleSelect from "../inputs/RoomStyleSelect";
 import PrivacySelect from "../inputs/PrivacySelect";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { selectListingById } from "@/app/slices/listingByIdSlice";
-import { createRender, selectRenderSlice } from "@/app/slices/createSlice";
+import { createRender, fetchDataFailure, fetchDataStart, fetchDataSuccess, selectRenderSlice } from "@/app/slices/createSlice";
 import { fetchListings } from "@/app/slices/listingsSlice";
 import Loading from "@/app/loading";
+import { toast } from "react-hot-toast";
 
 enum STEPS {
   ROOM_INFO = 0,
@@ -23,7 +24,7 @@ enum STEPS {
 }
 const GenerateIdealModal = () => {
   const dispatch = useAppDispatch();
-  const { render, pending, error, completed } =
+  const { render, isFetchingData, error } =
     useAppSelector(selectRenderSlice);
 
   const router = useRouter();
@@ -68,7 +69,10 @@ const GenerateIdealModal = () => {
     setStep((value) => value - 1);
   };
 
-  const onNext = () => {
+  const onNext = () => {     
+    console.log("RENDER_RESULTS",render);
+  console.log("PENDING_RESULTS",isFetchingData);
+    console.log("ERROR",error)
     setStep((value) => value + 1);
   };
 
@@ -76,15 +80,58 @@ const GenerateIdealModal = () => {
     if (step !== STEPS.IMAGES) {
       return onNext();
     }
-    setIsRendering(true);
-    //axios s
-    await dispatch(createRender(data)).unwrap();
-    setIsRendering(false);
-    dispatch(fetchListings("food")).unwrap();
+    setIsRendering(true)
+    dispatch(fetchDataStart);
 
-      generateIdeaModal.onClose();
-      router.push(`/listings/${render?.id}`);
-    
+    try {
+      var formData = new FormData();
+      formData.append("image", data.originalImageSrc);
+
+      const urlEndpoint = `https://funcapp-southn-test-01.azurewebsites.net/api/v1/renders?code=esW6_Nk_NZzAIFzn7z6PEIffxdo66EfvF6ES_0LxJApvAzFuqo0HNw==`;
+      //const urlEndpoint = `http://localhost:7145/api/v1/renders`;
+
+      const result = await fetch(
+        urlEndpoint + "&" +
+          new URLSearchParams({
+            prompt: `${data.roomStyle.value}`,
+            roomStyle: `${data.roomStyle.value}`,
+            roomType: `${data.roomType.value}`,
+            public: `true`,
+            userId: `dcbbbe93-e4e3-469f-9af5-72e1d9edad9b`
+          }),
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+        const createdRenderData = await result.json();
+        console.log("=====================",createdRenderData)
+        if(result.status === 200) {
+          setIsRendering(false)
+          dispatch(fetchDataSuccess(createdRenderData))
+          console.log("=============================|||||>>",render)
+          
+          router.push(`/listings/${createdRenderData?.id}`);
+          generateIdeaModal.onClose();
+        } else {
+          dispatch(fetchDataFailure(`${result.statusText}`))
+          setIsRendering(false)
+          generateIdeaModal.onClose();
+        }
+
+    } catch (error) {
+        dispatch(fetchDataFailure(error))
+        setIsRendering(false)
+        generateIdeaModal.onClose();
+    }
+
+    // if(render && pending) {
+    //   dispatch(fetchListings("food")).unwrap();
+    //   console.log("RENDER_RESULTS",render);
+    //   console.log("PENDING_RESULTS",pending);
+    //   generateIdeaModal.onClose();
+    //   router.push(`/listings/${render?.id}`);
+    // }    
   };
 
   const actionLabel = useMemo(() => {
@@ -145,6 +192,8 @@ const GenerateIdealModal = () => {
           subtitle="For best results make sure it shows the entire room in a 90° straight angle facing a wall or window horizontally. The AI isn't great at angled pics (yet)!"
         />
                 {isRendering ? <div className="absolute inset-0 flex justify-center items-center z-10"><Loading /></div> : null}
+                {/* {error ? <div className="absolute inset-0 flex justify-center items-center z-10">{toast.error(`${error}`)}</div> : null} */}
+                {error ? <div className="absolute inset-0 justify-center items-center z-10 hidden">{toast.error(`${error}`)}</div> : null}
         <ImageUpload
           onChange={(value) => setCustomValue("originalImageSrc", value)}
           value={originalImageSrc}
@@ -171,3 +220,7 @@ const GenerateIdealModal = () => {
 };
 
 export default GenerateIdealModal;
+function uploadToStableDiffusion(data: FieldValues) {
+  throw new Error("Function not implemented.");
+}
+
