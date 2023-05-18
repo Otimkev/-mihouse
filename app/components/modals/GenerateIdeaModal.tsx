@@ -80,8 +80,6 @@ const GenerateIdealModal = () => {
     if (step !== STEPS.IMAGES) {
       return onNext();
     }
-    setStep(STEPS.ROOM_INFO)
-    reset()
     setIsRendering(true)
     dispatch(fetchDataStart);
 
@@ -111,6 +109,8 @@ const GenerateIdealModal = () => {
           setIsRendering(false)
           dispatch(fetchDataSuccess(createdRenderData))
           generateIdeaModal.onClose();
+          reset()
+          setStep(STEPS.ROOM_INFO)
           router.push(`/listings/${createdRenderData?.id}`);
         } else {
           dispatch(fetchDataFailure(`${result.statusText}`))
