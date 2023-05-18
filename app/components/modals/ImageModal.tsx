@@ -20,6 +20,7 @@ import {
   selectListingById,
 } from "@/app/slices/listingByIdSlice";
 import Loading from "@/app/loading";
+import { getRandomNumber } from "@/app/utils/randomNumbers";
 
 export default function ImageModal({
   index,
@@ -167,8 +168,8 @@ export default function ImageModal({
                 <button
                   onClick={() =>
                     downloadPhoto(
-                      `https://mihousergsouthntest8717.blob.core.windows.net/mihouse/5130055d-8ada-47c9-880b-281c9b254745.png`,
-                      `${index}.jpg`
+                      `${setOfImageNav[index].image}`,
+                      `render-image${getRandomNumber()}.jpg`
                     )
                   }
                   className="rounded-full bg-black/50 p-2 text-white/75 backdrop-blur-lg transition hover:bg-black/75 hover:text-white"

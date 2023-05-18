@@ -27,6 +27,7 @@ const CustomSelector: React.FC<CustomSelectorProps> = ({
             <Select
                 placeholder={placeholderText}
                 isClearable
+                isSearchable={false}
                 options={getAllRoomTypes()}
                 value={value}
                 onChange={(value) => onChange(value as CustomSelectorValue)}

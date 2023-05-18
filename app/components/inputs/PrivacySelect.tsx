@@ -22,7 +22,7 @@ const PrivacySelect: React.FC<CustomSelectorProps> = ({
     return (
         <div>
             <Select
-                placeholder="Public"
+                placeholder="Select privacy mode"
                 isClearable
                 options={getAllPrivacy()}
                 value={value}

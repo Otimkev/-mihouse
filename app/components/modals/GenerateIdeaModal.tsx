@@ -80,6 +80,8 @@ const GenerateIdealModal = () => {
     if (step !== STEPS.IMAGES) {
       return onNext();
     }
+    setStep(STEPS.ROOM_INFO)
+    reset()
     setIsRendering(true)
     dispatch(fetchDataStart);
 
@@ -105,14 +107,11 @@ const GenerateIdealModal = () => {
         }
       );
         const createdRenderData = await result.json();
-        console.log("=====================",createdRenderData)
         if(result.status === 200) {
           setIsRendering(false)
           dispatch(fetchDataSuccess(createdRenderData))
-          console.log("=============================|||||>>",render)
-          
-          router.push(`/listings/${createdRenderData?.id}`);
           generateIdeaModal.onClose();
+          router.push(`/listings/${createdRenderData?.id}`);
         } else {
           dispatch(fetchDataFailure(`${result.statusText}`))
           setIsRendering(false)
@@ -123,15 +122,7 @@ const GenerateIdealModal = () => {
         dispatch(fetchDataFailure(error))
         setIsRendering(false)
         generateIdeaModal.onClose();
-    }
-
-    // if(render && pending) {
-    //   dispatch(fetchListings("food")).unwrap();
-    //   console.log("RENDER_RESULTS",render);
-    //   console.log("PENDING_RESULTS",pending);
-    //   generateIdeaModal.onClose();
-    //   router.push(`/listings/${render?.id}`);
-    // }    
+    }   
   };
 
   const actionLabel = useMemo(() => {
