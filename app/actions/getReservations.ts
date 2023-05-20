@@ -26,29 +26,29 @@ export default async function getReservations(
       query.listing = { userId: authorId };
     }
 
-    const reservations = await prisma.reservation.findMany({
-      where: query,
-      include: {
-        listing: true
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
-    });
+    // const reservations = await prisma.reservation.findMany({
+    //   where: query,
+    //   include: {
+    //     listing: true
+    //   },
+    //   orderBy: {
+    //     createdAt: 'desc'
+    //   }
+    // });
 
-    const safeReservations = reservations.map(
-      (reservation) => ({
-      ...reservation,
-      createdAt: reservation.createdAt.toISOString(),
-      startDate: reservation.startDate.toISOString(),
-      endDate: reservation.endDate.toISOString(),
-      listing: {
-        ...reservation.listing,
-        createdAt: reservation.listing.createdAt.toISOString(),
-      },
-    }));
+    // const safeReservations = reservations.map(
+    //   (reservation) => ({
+    //   ...reservation,
+    //   createdAt: reservation.createdAt.toISOString(),
+    //   startDate: reservation.startDate.toISOString(),
+    //   endDate: reservation.endDate.toISOString(),
+    //   listing: {
+    //     ...reservation.listing,
+    //     createdAt: reservation.listing.createdAt.toISOString(),
+    //   },
+    // }));
 
-    return safeReservations;
+    return [];
   } catch (error: any) {
     throw new Error(error);
   }

@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { format } from "date-fns";
 
 import useCountries from "@/app/hooks/useCountries";
-import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
+import { SafeUser } from "@/app/types";
 
 import HeartButton from "../HeartButton";
 import Button from "../Button";
@@ -15,7 +15,7 @@ import { IRenders } from "@/app/actions/listings";
 
 interface ListingCardProps {
   data: IRenders;
-  reservation?: SafeReservation;
+  reservation?: [];
   onAction?: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;

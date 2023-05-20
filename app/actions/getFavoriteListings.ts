@@ -10,20 +10,20 @@ export default async function getFavoriteListings() {
       return [];
     }
 
-    const favorites = await prisma.listing.findMany({
-      where: {
-        id: {
-          in: [...(currentUser.favoriteIds || [])]
-        }
-      }
-    });
+    // const favorites = await prisma.listing.findMany({
+    //   where: {
+    //     id: {
+    //       in: [...(currentUser.favoriteIds || [])]
+    //     }
+    //   }
+    // });
 
-    const safeFavorites = favorites.map((favorite) => ({
-      ...favorite,
-      createdAt: favorite.createdAt.toString(),
-    }));
+    // const safeFavorites = favorites.map((favorite) => ({
+    //   ...favorite,
+    //   createdAt: favorite.createdAt.toString(),
+    // }));
 
-    return safeFavorites;
+    return [];
   } catch (error: any) {
     throw new Error(error);
   }

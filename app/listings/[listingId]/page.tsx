@@ -2,7 +2,6 @@
 import ClientOnly from "@/app/components/ClientOnly";
 import EmptyState from "@/app/components/EmptyState";
 
-import ListingClient from "./ListingClient";
 import ViewListingModal from "@/app/components/modals/ViewListingModal";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
