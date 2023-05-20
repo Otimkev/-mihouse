@@ -74,7 +74,7 @@ console.log("USER_CURRENT",currentUser)
             border-[2px]
           "
         >
-          {`Credits: ${currentUser?.credits}`}
+          {`Credits: 300`}
         </div>
         {/* <div
           onClick={onGenerateIdea}
