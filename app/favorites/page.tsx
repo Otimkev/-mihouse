@@ -11,7 +11,7 @@ const ListingPage = async () => {
   const listings = await getFavoriteListings();
   const currentUser = await getCurrentUser();
 
-  if (listings.length === 0) {
+  if (true) {
     return (
       <ClientOnly>
         <EmptyState
@@ -22,14 +22,14 @@ const ListingPage = async () => {
     );
   }
 
-  return (
-    <ClientOnly>
-      <FavoritesClient
-        listings={listings}
-        currentUser={currentUser}
-      />
-    </ClientOnly>
-  );
+  // return (
+  //   <ClientOnly>
+  //     <FavoritesClient
+  //       listings={listings}
+  //       currentUser={currentUser}
+  //     />
+  //   </ClientOnly>
+  // );
 }
  
 export default ListingPage;
