@@ -22,21 +22,20 @@ import {
 import { fetchListings } from "@/app/slices/listingsSlice";
 import Loading from "@/app/loading";
 import { toast } from "react-hot-toast";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 
 enum STEPS {
   ROOM_INFO = 0,
   PRIVACY = 1,
   IMAGES = 2,
 }
-const GenerateIdealModal = async () => {
+const GenerateIdealModal = () => {
   const dispatch = useAppDispatch();
   const { render, isFetchingData, error } = useAppSelector(selectRenderSlice);
 
   const router = useRouter();
   const generateIdeaModal = useGenerateIdeaModal();
 
-  const currentUser = await getCurrentUser();
+  //const currentUser = await getCurrentUser();
 
   const [step, setStep] = useState(STEPS.ROOM_INFO);
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +100,7 @@ const GenerateIdealModal = async () => {
             roomStyle: `${data.roomStyle.value}`,
             roomType: `${data.roomType.value}`,
             public: data.roomStyle.value === "public" ? "true" : "false",
-            userId: currentUser? currentUser.id : `dcbbbe93-e4e3-469f-9af5-72e1d9edad9b`,
+            userId: `dcbbbe93-e4e3-469f-9af5-72e1d9edad9b`,
           }),
         {
           method: "POST",
