@@ -25,7 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({
         "
       >
       <Container>
-        <div 
+        <div
           className="
             flex 
             flex-row 
@@ -36,8 +36,8 @@ const Navbar: React.FC<NavbarProps> = ({
           "
         >
           <Logo />
-          {/* <Search /> */}
-          {/* <Button label="Generate" onClick={() => {}}/>
+          {/* <Search />
+          <Button label="Generate" onClick={() => {}}/>
           <Button label="Billing" onClick={() => {}}/> */}
           <UserMenu currentUser={currentUser} />
         </div>

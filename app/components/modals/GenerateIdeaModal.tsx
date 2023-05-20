@@ -12,23 +12,31 @@ import RoomStyleSelect from "../inputs/RoomStyleSelect";
 import PrivacySelect from "../inputs/PrivacySelect";
 import { useAppDispatch, useAppSelector } from "@/app/redux/hooks";
 import { selectListingById } from "@/app/slices/listingByIdSlice";
-import { createRender, fetchDataFailure, fetchDataStart, fetchDataSuccess, selectRenderSlice } from "@/app/slices/createSlice";
+import {
+  createRender,
+  fetchDataFailure,
+  fetchDataStart,
+  fetchDataSuccess,
+  selectRenderSlice,
+} from "@/app/slices/createSlice";
 import { fetchListings } from "@/app/slices/listingsSlice";
 import Loading from "@/app/loading";
 import { toast } from "react-hot-toast";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 enum STEPS {
   ROOM_INFO = 0,
   PRIVACY = 1,
-  IMAGES = 2
+  IMAGES = 2,
 }
-const GenerateIdealModal = () => {
+const GenerateIdealModal = async () => {
   const dispatch = useAppDispatch();
-  const { render, isFetchingData, error } =
-    useAppSelector(selectRenderSlice);
+  const { render, isFetchingData, error } = useAppSelector(selectRenderSlice);
 
   const router = useRouter();
   const generateIdeaModal = useGenerateIdeaModal();
+
+  const currentUser = await getCurrentUser();
 
   const [step, setStep] = useState(STEPS.ROOM_INFO);
   const [isLoading, setIsLoading] = useState(false);
@@ -69,10 +77,7 @@ const GenerateIdealModal = () => {
     setStep((value) => value - 1);
   };
 
-  const onNext = () => {     
-    console.log("RENDER_RESULTS",render);
-  console.log("PENDING_RESULTS",isFetchingData);
-    console.log("ERROR",error)
+  const onNext = () => {
     setStep((value) => value + 1);
   };
 
@@ -80,7 +85,7 @@ const GenerateIdealModal = () => {
     if (step !== STEPS.IMAGES) {
       return onNext();
     }
-    setIsRendering(true)
+    setIsRendering(true);
     dispatch(fetchDataStart);
 
     try {
@@ -88,41 +93,39 @@ const GenerateIdealModal = () => {
       formData.append("image", data.originalImageSrc);
 
       const urlEndpoint = `https://funcapp-southn-test-01.azurewebsites.net/api/v1/renders?code=esW6_Nk_NZzAIFzn7z6PEIffxdo66EfvF6ES_0LxJApvAzFuqo0HNw==`;
-      //const urlEndpoint = `http://localhost:7145/api/v1/renders`;
-
       const result = await fetch(
-        urlEndpoint + "&" +
+        urlEndpoint +
+          "&" +
           new URLSearchParams({
             prompt: `${data.roomStyle.value}`,
             roomStyle: `${data.roomStyle.value}`,
             roomType: `${data.roomType.value}`,
-            public: `true`,
-            userId: `dcbbbe93-e4e3-469f-9af5-72e1d9edad9b`
+            public: data.roomStyle.value === "public" ? "true" : "false",
+            userId: currentUser? currentUser.id : `dcbbbe93-e4e3-469f-9af5-72e1d9edad9b`,
           }),
         {
           method: "POST",
           body: formData,
         }
       );
-        const createdRenderData = await result.json();
-        if(result.status === 200) {
-          setIsRendering(false)
-          dispatch(fetchDataSuccess(createdRenderData))
-          generateIdeaModal.onClose();
-          reset()
-          setStep(STEPS.ROOM_INFO)
-          router.push(`/listings/${createdRenderData?.id}`);
-        } else {
-          dispatch(fetchDataFailure(`${result.statusText}`))
-          setIsRendering(false)
-          generateIdeaModal.onClose();
-        }
-
-    } catch (error) {
-        dispatch(fetchDataFailure(error))
-        setIsRendering(false)
+      const createdRenderData = await result.json();
+      if (result.status === 200) {
+        setIsRendering(false);
+        dispatch(fetchDataSuccess(createdRenderData));
         generateIdeaModal.onClose();
-    }   
+        reset();
+        setStep(STEPS.ROOM_INFO);
+        router.push(`/listings/${createdRenderData?.id}`);
+      } else {
+        dispatch(fetchDataFailure(`${result.statusText}`));
+        setIsRendering(false);
+        generateIdeaModal.onClose();
+      }
+    } catch (error) {
+      dispatch(fetchDataFailure(error));
+      setIsRendering(false);
+      generateIdeaModal.onClose();
+    }
   };
 
   const actionLabel = useMemo(() => {
@@ -182,9 +185,16 @@ const GenerateIdealModal = () => {
           title="Take a photo of your current room."
           subtitle="For best results make sure it shows the entire room in a 90° straight angle facing a wall or window horizontally. The AI isn't great at angled pics (yet)!"
         />
-                {isRendering ? <div className="absolute inset-0 flex justify-center items-center z-10"><Loading /></div> : null}
-                {/* {error ? <div className="absolute inset-0 flex justify-center items-center z-10">{toast.error(`${error}`)}</div> : null} */}
-                {error ? <div className="absolute inset-0 justify-center items-center z-10 hidden">{toast.error(`${error}`)}</div> : null}
+        {isRendering ? (
+          <div className="absolute inset-0 flex justify-center items-center z-10">
+            <Loading />
+          </div>
+        ) : null}
+        {error ? (
+          <div className="absolute inset-0 justify-center items-center z-10 hidden">
+            {toast.error(`${error}`)}
+          </div>
+        ) : null}
         <ImageUpload
           onChange={(value) => setCustomValue("originalImageSrc", value)}
           value={originalImageSrc}
@@ -192,8 +202,6 @@ const GenerateIdealModal = () => {
       </div>
     );
   }
-
-
 
   return (
     <Modal
@@ -214,4 +222,3 @@ export default GenerateIdealModal;
 function uploadToStableDiffusion(data: FieldValues) {
   throw new Error("Function not implemented.");
 }
-

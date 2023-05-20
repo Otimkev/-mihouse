@@ -13,6 +13,7 @@ import ClientOnly from "./components/ClientOnly";
 import getCurrentUser from "./actions/getCurrentUser";
 import GenerateIdealModal from "./components/modals/GenerateIdeaModal";
 import Providers from "./redux/Providers";
+import CreditsModal from "./components/modals/CreditsModal";
 
 export const metadata = {
   title: "mihouse AI",
@@ -35,17 +36,18 @@ export default async function RootLayout({
       <body className={font.className}>
         <Providers>
           <ClientOnly>
+            <Navbar currentUser={currentUser} />
             <ToasterProvider />
             <LoginModal />
             <RegisterModal />
             <SearchModal />
             <RentModal />
+            <CreditsModal/>
             <GenerateIdealModal />
-            <Navbar currentUser={currentUser} />
+            <div className="pb-20 pt-28 2xl:h-screen 2xl:overflow-hidden xl:h-screen xl:overflow-hidden lg:h-screen lg:overflow-hidden">
+              {children}
+            </div>
           </ClientOnly>
-          <div className="pb-20 pt-28 2xl:h-screen 2xl:overflow-hidden xl:h-screen xl:overflow-hidden lg:h-screen lg:overflow-hidden">
-            {children}
-          </div>
         </Providers>
       </body>
     </html>

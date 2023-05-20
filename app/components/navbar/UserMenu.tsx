@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useCallback, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
@@ -13,27 +13,27 @@ import { SafeUser } from "@/app/types";
 import MenuItem from "./MenuItem";
 import Avatar from "../Avatar";
 import useGenerateIdeaModal from "@/app/hooks/useGenerateIdeaModal";
+import useCreditsModal from "@/app/hooks/useCreditsModal";
 
 interface UserMenuProps {
-  currentUser?: SafeUser | null
+  currentUser?: SafeUser | null;
 }
 
-const UserMenu: React.FC<UserMenuProps> = ({
-  currentUser
-}) => {
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const router = useRouter();
 
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
   const rentModal = useRentModal();
   const generateIdeaModal = useGenerateIdeaModal();
+  const creditsModal = useCreditsModal();
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
   }, []);
-
+console.log("USER_CURRENT",currentUser)
   const onRent = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
@@ -42,18 +42,25 @@ const UserMenu: React.FC<UserMenuProps> = ({
     rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
 
+  const onCredits = useCallback(() => {
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
+    creditsModal.onOpen();
+  }, [creditsModal]);
+
   const onGenerateIdea = useCallback(() => {
-    // if (!currentUser) {
-    //   return loginModal.onOpen();
-    // }
+    if (!currentUser) {
+      return loginModal.onOpen();
+    }
     generateIdeaModal.onOpen();
   }, [generateIdeaModal]);
 
-  return ( 
+  return (
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
-      <div 
-          onClick={onGenerateIdea}
+        <div
+          onClick={onCredits}
           className="
             md:block
             text-sm 
@@ -62,15 +69,16 @@ const UserMenu: React.FC<UserMenuProps> = ({
             px-4 
             rounded-full 
             hover:bg-neutral-100 
-            transition 
+            transition
+            cursor-pointer
+            border-[2px]
           "
         >
-          Generation Credits: 5
+          {`Credits: ${currentUser?.credits}`}
         </div>
-        <div 
+        {/* <div
           onClick={onGenerateIdea}
           className="
-            
             md:block
             text-sm 
             font-semibold 
@@ -84,10 +92,10 @@ const UserMenu: React.FC<UserMenuProps> = ({
           "
         >
           Billing
-        </div>
-        <div 
-        onClick={toggleOpen}
-        className="
+        </div> */}
+        <div
+          onClick={toggleOpen}
+          className="
           p-4
           md:py-1
           md:px-2
@@ -110,66 +118,48 @@ const UserMenu: React.FC<UserMenuProps> = ({
         </div>
       </div>
       {isOpen && (
-        <div 
+        <div
           className="
-            absolute 
             rounded-xl 
             shadow-md
-            w-[40vw]
-            md:w-3/4 
+            w-200
             bg-white 
             overflow-hidden 
             right-0 
             top-12 
             text-sm
+            fixed
           "
         >
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem 
-                  label="My trips" 
-                  onClick={() => router.push('/trips')}
+                <MenuItem
+                  label="My favorites"
+                  onClick={() => router.push("/favorites")}
                 />
-                <MenuItem 
-                  label="My favorites" 
-                  onClick={() => router.push('/favorites')}
+                <MenuItem
+                  label="My houses"
+                  onClick={() => router.push("/reservations")}
                 />
-                <MenuItem 
-                  label="My reservations" 
-                  onClick={() => router.push('/reservations')}
-                />
-                <MenuItem 
-                  label="My properties" 
-                  onClick={() => router.push('/properties')}
-                />
-                <MenuItem 
-                  label="Generate Idea" 
+                <MenuItem
+                  label="Generate Idea"
                   onClick={generateIdeaModal.onOpen}
                 />
                 <hr />
-                <MenuItem 
-                  label="Logout" 
-                  onClick={() => signOut()}
-                />
+                <MenuItem label="Logout" onClick={() => signOut()} />
               </>
             ) : (
               <>
-                <MenuItem 
-                  label="Login" 
-                  onClick={loginModal.onOpen}
-                />
-                <MenuItem 
-                  label="Sign up" 
-                  onClick={registerModal.onOpen}
-                />
+                <MenuItem label="Login" onClick={loginModal.onOpen} />
+                <MenuItem label="Sign up" onClick={registerModal.onOpen} />
               </>
             )}
           </div>
         </div>
       )}
     </div>
-   );
-}
- 
+  );
+};
+
 export default UserMenu;
