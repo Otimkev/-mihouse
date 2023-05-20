@@ -139,8 +139,8 @@ console.log("USER_CURRENT",currentUser)
                   onClick={() => router.push("/favorites")}
                 />
                 <MenuItem
-                  label="My houses"
-                  onClick={() => router.push("/reservations")}
+                  label="Mihouses"
+                  onClick={() => router.push("/mihouses")}
                 />
                 <MenuItem
                   label="Generate Idea"

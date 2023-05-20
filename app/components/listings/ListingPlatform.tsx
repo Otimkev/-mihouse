@@ -5,12 +5,13 @@ import { fetchListings, selectListings } from "@/app/slices/listingsSlice";
 import { useEffect, useRef } from "react";
 import ListingCard from "./ListingCard";
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import Loading from "@/app/loading";
 
 interface ListingPlatformProps {
-    data?: boolean;
+  data?: boolean;
 }
 
-const ListingPlatform: React.FC<ListingPlatformProps> = ({data}) => {
+const ListingPlatform: React.FC<ListingPlatformProps> = ({ data }) => {
   const dispatch = useAppDispatch();
   const { listings, pending, error } = useAppSelector(selectListings);
 
@@ -19,10 +20,10 @@ const ListingPlatform: React.FC<ListingPlatformProps> = ({data}) => {
   const listingRef = useRef(false);
 
   useEffect(() => {
-    if(listingRef.current === false) {
-        dispatch(fetchListings("food"));
+    if (listingRef.current === false) {
+      dispatch(fetchListings("food"));
     }
-
+    console.log("Listings",listings)
     return () => {
       listingRef.current = true;
     };
@@ -30,12 +31,13 @@ const ListingPlatform: React.FC<ListingPlatformProps> = ({data}) => {
 
   return (
     <>
-      {listings && listings.map((listing: any) => (
-        <ListingCard
-          key={listing.id}
-          data={listing}
-        />
-      ))}
+      {listings.length !== 0 ? (
+        listings.map((listing: any) => (
+          <ListingCard key={listing.id} data={listing} />
+        ))
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };
