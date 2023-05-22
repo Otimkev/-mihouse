@@ -23,7 +23,6 @@ const ListingPlatform: React.FC<ListingPlatformProps> = ({ data }) => {
     if (listingRef.current === false) {
       dispatch(fetchListings("food"));
     }
-    console.log("Listings",listings)
     return () => {
       listingRef.current = true;
     };
