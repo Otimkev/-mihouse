@@ -92,6 +92,7 @@ const GenerateIdealModal = () => {
       formData.append("image", data.originalImageSrc);
 
       const urlEndpoint = `https://funcapp-southn-test-01.azurewebsites.net/api/v1/renders?code=esW6_Nk_NZzAIFzn7z6PEIffxdo66EfvF6ES_0LxJApvAzFuqo0HNw==`;
+      
       const result = await fetch(
         urlEndpoint +
           "&" +
@@ -108,6 +109,7 @@ const GenerateIdealModal = () => {
         }
       );
       const createdRenderData = await result.json();
+
       if (result.status === 200) {
         setIsRendering(false);
         dispatch(fetchDataSuccess(createdRenderData));
@@ -116,7 +118,7 @@ const GenerateIdealModal = () => {
         setStep(STEPS.ROOM_INFO);
         router.push(`/listings/${createdRenderData?.id}`);
       } else {
-        dispatch(fetchDataFailure(`${result.statusText}`));
+        dispatch(fetchDataFailure(`System at maximum capacity, unable to process request. Please try again later!`));
         setIsRendering(false);
         generateIdeaModal.onClose();
       }
@@ -191,7 +193,7 @@ const GenerateIdealModal = () => {
         ) : null}
         {error ? (
           <div className="absolute inset-0 justify-center items-center z-10 hidden">
-            {toast.error(`${error}`)}
+            {toast.error(`System is at maximum capacity, unable to process request. Try again later!`)}
           </div>
         ) : null}
         <ImageUpload
