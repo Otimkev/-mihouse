@@ -24,6 +24,7 @@ const PrivacySelect: React.FC<CustomSelectorProps> = ({
             <Select
                 placeholder="Select privacy mode"
                 isClearable
+                isSearchable={false}
                 options={getAllPrivacy()}
                 value={value}
                 onChange={(value) => onChange(value as CustomSelectorValue)}

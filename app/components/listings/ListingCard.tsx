@@ -104,7 +104,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             right-3
           "
               >
-                <HeartButton listingId="listingId" currentUser={currentUser} />
+                {/* <HeartButton listingId="listingId" currentUser={currentUser} /> */}
               </div>
             </div>
             <div className="pt-2">
@@ -142,7 +142,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             right-3
           "
               >
-                <HeartButton listingId="listingId" currentUser={currentUser} />
+                {/* <HeartButton listingId="listingId" currentUser={currentUser} /> */}
               </div>
             </div>
             <div className="pt-2">
