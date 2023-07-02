@@ -9,9 +9,15 @@ const roomTypes = [
     "Home office",
 ]
 
-const formatedRoomTypes = roomTypes.map((roomType) => ({
-    value: roomType,
-    label: roomType
+const resultQuality = [
+    {label:"Low (costs 10pts)", value: "256x256"},
+    {label:"Medium (costs 15pts)", value: "512x512"},
+    {label:"High (costs 25pts", value: "1024x1024"}
+]
+
+const formatedRoomTypes = resultQuality.map((roomType) => ({
+    value: roomType.value,
+    label: roomType.label
 }))
 
 const useCustomSelector = () => {

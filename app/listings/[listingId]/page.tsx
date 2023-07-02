@@ -15,7 +15,6 @@ const ListingPage = ({ params }: { params: IParams }) => {
 
   const dispatch = useAppDispatch();
   const { listing, pending, error } = useAppSelector(selectListings);
-  console.log("THE_STURBBON_LISTING",listing)
   return (
     <ClientOnly>
       <div>

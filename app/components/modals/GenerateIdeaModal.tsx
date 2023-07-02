@@ -92,7 +92,7 @@ const GenerateIdealModal = () => {
       formData.append("image", data.originalImageSrc);
 
       const urlEndpoint = `https://funcapp-southn-test-01.azurewebsites.net/api/v1/renders?code=esW6_Nk_NZzAIFzn7z6PEIffxdo66EfvF6ES_0LxJApvAzFuqo0HNw==`;
-      
+      //const urlEndpoint = "http://localhost:7145/api/v1/renders"
       const result = await fetch(
         urlEndpoint +
           "&" +
@@ -146,20 +146,20 @@ const GenerateIdealModal = () => {
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Which of these best describes your idea?"
+        title="Which of these best describes your result quality?"
         subtitle="Select what best suits you"
       />
       <CustomSelector
-        placeholderText="Select Room type"
+        placeholderText="Select result quality"
         value={roomType}
         onChange={(value) => setCustomValue("roomType", value)}
       />
 
-      <RoomStyleSelect
+      {/* <RoomStyleSelect
         placeholderText="Select Room style"
         value={roomStyle}
         onChange={(value) => setCustomValue("roomStyle", value)}
-      />
+      /> */}
     </div>
   );
 
