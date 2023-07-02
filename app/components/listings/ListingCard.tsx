@@ -109,7 +109,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             </div>
             <div className="pt-2">
               {/* <div className="font-medium text-lg">{`Original ${data.roomType} ${data.roomStyle}`}</div> */}
-              <div className="font-light text-neutral-500">{`Original ${data.roomType} ${data.roomStyle}`}</div>
+              <div className="font-light text-neutral-500">Original Image</div>
             </div>
           </div>
           <div>
@@ -147,7 +147,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             </div>
             <div className="pt-2">
               {/* <div className="font-medium text-lg">Rendered Image, Kampala</div> */}
-              <div className="font-light text-neutral-500">{`Rendered ${data.roomType} ${data.roomStyle}`}</div>
+              <div className="font-light text-neutral-500">Rendered Image</div>
             </div>
           </div>
         </div>
